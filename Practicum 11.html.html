@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Neural Netics | Synaptic Portal Registration</title>
+  <style>
+    :root {
+      --bg-dark: #070b14;
+      --card-bg: #0f172a;
+      --neon-cyan: #00f3ff;
+      --neon-purple: #a855f7;
+      --text-main: #e2e8f0;
+      --text-muted: #94a3b8;
+      --error-red: #ff3b5c;
+      --success-green: #10b981;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      background-image: 
+        radial-gradient(circle at 15% 20%, rgba(0, 243, 255, 0.08), transparent 35%),
+        radial-gradient(circle at 85% 80%, rgba(168, 85, 247, 0.08), transparent 35%);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .portal-container {
+      background: var(--card-bg);
+      border: 1px solid rgba(0, 243, 255, 0.25);
+      box-shadow: 0 0 30px rgba(0, 243, 255, 0.1);
+      border-radius: 12px;
+      width: 100%;
+      max-width: 500px;
+      padding: 32px;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 24px;
+    }
+
+    .header h1 {
+      font-size: 1.7rem;
+      letter-spacing: 1.5px;
+      background: linear-gradient(90deg, var(--neon-cyan), var(--neon-purple));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-transform: uppercase;
+    }
+
+    .header p {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-top: 6px;
+    }
+
+    .form-group {
+      margin-bottom: 18px;
+      position: relative;
+    }
+
+    label {
+      display: block;
+      font-size: 0.85rem;
+      font-weight: 600;
+      margin-bottom: 6px;
+      color: var(--text-main);
+      letter-spacing: 0.5px;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 11px 14px;
+      background: #1e293b;
+      border: 1.5px solid #334155;
+      border-radius: 6px;
+      color: #fff;
+      font-size: 0.95rem;
+      outline: none;
+      transition: all 0.25s ease;
+    }
+
+    input:focus, select:focus {
+      border-color: var(--neon-cyan);
+      box-shadow: 0 0 8px rgba(0, 243, 255, 0.3);
+    }
+
+    /* Validation States */
+    .form-group.error input,
+    .form-group.error select {
+      border-color: var(--error-red);
+      box-shadow: 0 0 8px rgba(255, 59, 92, 0.25);
+    }
+
+    .form-group.success input,
+    .form-group.success select {
+      border-color: var(--success-green);
+    }
+
+    .error-msg {
+      color: var(--error-red);
+      font-size: 0.78rem;
+      margin-top: 5px;
+      display: none;
+    }
+
+    .form-group.error .error-msg {
+      display: block;
+    }
+
+    .checkbox-group {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .checkbox-group input {
+      width: auto;
+      accent-color: var(--neon-cyan);
+      cursor: pointer;
+    }
+
+    .checkbox-group label {
+      margin: 0;
+      font-weight: 400;
+      font-size: 0.82rem;
+      color: var(--text-muted);
+    }
+
+    button {
+      width: 100%;
+      padding: 13px;
+      margin-top: 12px;
+      background: linear-gradient(90deg, #0284c7, #7e22ce);
+      border: none;
+      border-radius: 6px;
+      color: #fff;
+      font-size: 1rem;
+      font-weight: 600;
+      letter-spacing: 1px;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    button:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 0 18px rgba(0, 243, 255, 0.4);
+    }
+
+    #statusBanner {
+      margin-top: 18px;
+      padding: 12px;
+      border-radius: 6px;
+      text-align: center;
+      font-size: 0.9rem;
+      display: none;
+    }
+
+    #statusBanner.valid {
+      display: block;
+      background: rgba(16, 185, 129, 0.15);
+      border: 1px solid var(--success-green);
+      color: #6ee7b7;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="portal-container">
+    <div class="header">
+      <h1>Neural Netics</h1>
+      <p>Synaptic Core & BCI Researcher Access Registration</p>
+    </div>
+
+    <form id="neuralForm" novalidate>
+      <!-- Researcher Name -->
+      <div class="form-group">
+        <label for="fullName">Researcher Full Name</label>
+        <input type="text" id="fullName" placeholder="e.g., Dr. Elena Vance" />
+        <div class="error-msg" id="nameError">Name must contain at least 3 alphabetic characters.</div>
+      </div>
+
+      <!-- Neural Node ID -->
+      <div class="form-group">
+        <label for="nodeId">Neural Node ID (Format: NN-XXXX)</label>
+        <input type="text" id="nodeId" placeholder="e.g., NN-4092" />
+        <div class="error-msg" id="nodeError">Invalid ID. Must follow format NN-1234 (4 digits).</div>
+      </div>
+
+      <!-- Institutional Email -->
+      <div class="form-group">
+        <label for="email">Neural Network Email</label>
+        <input type="email" id="email" placeholder="researcher@neuralnetics.ai" />
+        <div class="error-msg" id="emailError">Please enter a valid email address.</div>
+      </div>
+
+      <!-- Access Tier -->
+      <div class="form-group">
+        <label for="clearance">Synaptic Clearance Tier</label>
+        <select id="clearance">
+          <option value="">-- Select Access Tier --</option>
+          <option value="tier1">Tier 1: EEG Telemetry Observer</option>
+          <option value="tier2">Tier 2: Deep Neural Model Trainer</option>
+          <option value="tier3">Tier 3: Cortical Interface Architect</option>
+        </select>
+        <div class="error-msg" id="clearanceError">Please select a synaptic clearance tier.</div>
+      </div>
+
+      <!-- Encryption Passkey -->
+      <div class="form-group">
+        <label for="passkey">Quantum Encryption Passkey</label>
+        <input type="password" id="passkey" placeholder="Min 8 chars, 1 uppercase, 1 number, 1 symbol" />
+        <div class="error-msg" id="passError">Requires 8+ chars with uppercase, number & symbol.</div>
+      </div>
+
+      <!-- Confirm Passkey -->
+      <div class="form-group">
+        <label for="confirmPasskey">Confirm Passkey</label>
+        <input type="password" id="confirmPasskey" placeholder="Re-enter passkey" />
+        <div class="error-msg" id="confirmError">Passkeys do not match.</div>
+      </div>
+
+      <!-- Ethics Agreement -->
+      <div class="form-group">
+        <div class="checkbox-group">
+          <input type="checkbox" id="ethics" />
+          <label for="ethics">I agree to the Neural Netics Bio-Digital Safety Protocol.</label>
+        </div>
+        <div class="error-msg" id="ethicsError">You must accept the safety protocol to proceed.</div>
+      </div>
+
+      <button type="submit">Initialize Neural Link</button>
+      <div id="statusBanner"></div>
+    </form>
+  </div>
+
+  <script>
+    // 1. Select DOM Elements
+    const form = document.getElementById('neuralForm');
+    const fullName = document.getElementById('fullName');
+    const nodeId = document.getElementById('nodeId');
+    const email = document.getElementById('email');
+    const clearance = document.getElementById('clearance');
+    const passkey = document.getElementById('passkey');
+    const confirmPasskey = document.getElementById('confirmPasskey');
+    const ethics = document.getElementById('ethics');
+    const statusBanner = document.getElementById('statusBanner');
+
+    // Helper function to toggle error/success states
+    function setFieldState(inputElement, isValid) {
+      const formGroup = inputElement.closest('.form-group');
+      if (isValid) {
+        formGroup.classList.remove('error');
+        formGroup.classList.add('success');
+      } else {
+        formGroup.classList.remove('success');
+        formGroup.classList.add('error');
+      }
+      return isValid;
+    }
+
+    // Individual Field Validators
+    function validateName() {
+      const regex = /^[a-zA-Z\s.]{3,}$/;
+      return setFieldState(fullName, regex.test(fullName.value.trim()));
+    }
+
+    function validateNodeId() {
+      const regex = /^NN-\d{4}$/;
+      return setFieldState(nodeId, regex.test(nodeId.value.trim()));
+    }
+
+    function validateEmail() {
+      const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      return setFieldState(email, regex.test(email.value.trim()));
+    }
+
+    function validateClearance() {
+      return setFieldState(clearance, clearance.value !== '');
+    }
+
+    function validatePasskey() {
+      // Min 8 chars, 1 uppercase, 1 number, 1 special char
+      const regex = /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#])[A-Za-z\d@$!%*?&#]{8,}$/;
+      const valid = regex.test(passkey.value);
+      if (confirmPasskey.value !== '') validateConfirmPasskey();
+      return setFieldState(passkey, valid);
+    }
+
+    function validateConfirmPasskey() {
+      const valid = confirmPasskey.value !== '' && confirmPasskey.value === passkey.value;
+      return setFieldState(confirmPasskey, valid);
+    }
+
+    function validateEthics() {
+      return setFieldState(ethics, ethics.checked);
+    }
+
+    // 2. Real-time Validation Event Listeners
+    fullName.addEventListener('input', validateName);
+    nodeId.addEventListener('input', validateNodeId);
+    email.addEventListener('input', validateEmail);
+    clearance.addEventListener('change', validateClearance);
+    passkey.addEventListener('input', validatePasskey);
+    confirmPasskey.addEventListener('input', validateConfirmPasskey);
+    ethics.addEventListener('change', validateEthics);
+
+    // 3. Form Submit Handler
+    form.addEventListener('submit', function (e) {
+      e.preventDefault(); // Prevent default page reload
+
+      const isFormValid =
+        validateName() &
+        validateNodeId() &
+        validateEmail() &
+        validateClearance() &
+        validatePasskey() &
+        validateConfirmPasskey() &
+        validateEthics();
+
+      if (isFormValid) {
+        statusBanner.className = 'valid';
+        statusBanner.textContent = `Access Granted! Neural Link initialized for ${fullName.value.trim()} (${nodeId.value.trim()}).`;
+      } else {
+        statusBanner.className = '';
+        statusBanner.style.display = 'none';
+      }
+    });
+  </script>
+</body>
+</html>
